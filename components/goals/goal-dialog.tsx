@@ -27,6 +27,17 @@ export function GoalDialog({ open, onOpenChange, goal }: GoalDialogProps) {
     categoryId: "",
   })
 
+  const resetForm = () => {
+    setFormData({
+      title: "",
+      targetValue: "",
+      currentValue: "0",
+      startDate: new Date().toISOString().split("T")[0],
+      endDate: "",
+      categoryId: "",
+    })
+  }
+
   useEffect(() => {
     if (goal) {
       setFormData({
@@ -63,6 +74,7 @@ export function GoalDialog({ open, onOpenChange, goal }: GoalDialogProps) {
       updateGoal(goal.id, goalData)
     } else {
       addGoal(goalData)
+      resetForm()
     }
 
     onOpenChange(false)

@@ -10,7 +10,7 @@ import { useFinanceData } from "@/hooks/use-finance-data"
 import { GoalDialog } from "./goal-dialog"
 
 export function GoalsPage() {
-  const { goals, categories } = useFinanceData()
+  const { goals, categories, deleteGoal } = useFinanceData()
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [editingGoal, setEditingGoal] = useState(null)
 
@@ -22,6 +22,7 @@ export function GoalsPage() {
   const handleDelete = (goalId: number) => {
     if (confirm("Tem certeza que deseja excluir esta meta?")) {
       console.log("Excluir meta:", goalId)
+        deleteGoal(goalId)
     }
   }
 
