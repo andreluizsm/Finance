@@ -61,10 +61,10 @@ export function CategoriesPage() {
                   </div>
                 </div>
                 <div className="flex space-x-1">
-                  <Button variant="ghost" size="icon" onClick={() => handleEdit(category)}>
+                  <Button id="update" variant="ghost" size="icon" onClick={() => handleEdit(category)}>
                     <Pencil className="h-4 w-4" />
                   </Button>
-                  <Button variant="ghost" size="icon" onClick={() => handleDelete(category.id)}>
+                  <Button id="delete" variant="ghost" size="icon" onClick={() => handleDelete(category.id)}>
                     <Trash2 className="h-4 w-4" />
                   </Button>
                 </div>
