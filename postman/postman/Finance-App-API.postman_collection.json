@@ -1,0 +1,1316 @@
+{
+  "info": {
+    "name": "Finance App API",
+    "description": "Comprehensive API testing collection for Finance Application",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/api",
+      "type": "string"
+    },
+    {
+      "key": "authToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "userId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "testEmail",
+      "value": "postman-test@example.com",
+      "type": "string"
+    },
+    {
+      "key": "testPassword",
+      "value": "postman123",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has token\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('token');",
+                  "    pm.collectionVariables.set('authToken', jsonData.token);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has user data\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('usuario');",
+                  "    pm.expect(jsonData.usuario).to.have.property('id');",
+                  "    pm.expect(jsonData.usuario).to.have.property('nome');",
+                  "    pm.expect(jsonData.usuario).to.have.property('email');",
+                  "    pm.collectionVariables.set('userId', jsonData.usuario.id);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nome\": \"Postman Test User\",\n    \"email\": \"{{testEmail}}\",\n    \"senha\": \"{{testPassword}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has token\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('token');",
+                  "    pm.collectionVariables.set('authToken', jsonData.token);",
+                  "});",
+                  "",
+                  "pm.test(\"Token is valid format\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.token).to.be.a('string');",
+                  "    pm.expect(jsonData.token.length).to.be.greaterThan(10);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"joao@email.com\",\n    \"senha\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Login Invalid Credentials",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 400\", function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "",
+                  "pm.test(\"Error message is present\", function () {",
+                  "    pm.expect(pm.response.text()).to.include('não encontrado');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"invalid@email.com\",\n    \"senha\": \"wrongpassword\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Accounts",
+      "item": [
+        {
+          "name": "Get All Accounts",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response is array\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.be.an('array');",
+                  "});",
+                  "",
+                  "pm.test(\"Accounts have required fields\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    if (jsonData.length > 0) {",
+                  "        pm.expect(jsonData[0]).to.have.property('id');",
+                  "        pm.expect(jsonData[0]).to.have.property('nome');",
+                  "        pm.expect(jsonData[0]).to.have.property('tipo');",
+                  "        pm.expect(jsonData[0]).to.have.property('saldo');",
+                  "    }",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/contas",
+              "host": ["{{baseUrl}}"],
+              "path": ["contas"]
+            }
+          }
+        },
+        {
+          "name": "Create Account",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Account created successfully\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('id');",
+                  "    pm.expect(jsonData.nome).to.eql('Postman Test Account');",
+                  "    pm.collectionVariables.set('testAccountId', jsonData.id);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nome\": \"Postman Test Account\",\n    \"tipo\": \"CORRENTE\",\n    \"saldo\": 1000.00\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/contas",
+              "host": ["{{baseUrl}}"],
+              "path": ["contas"]
+            }
+          }
+        },
+        {
+          "name": "Update Account",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Account updated successfully\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.nome).to.eql('Updated Postman Account');",
+                  "    pm.expect(jsonData.saldo).to.eql(1500.00);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nome\": \"Updated Postman Account\",\n    \"tipo\": \"CORRENTE\",\n    \"saldo\": 1500.00\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/contas/{{testAccountId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["contas", "{{testAccountId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Account",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/contas/{{testAccountId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["contas", "{{testAccountId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "Get All Categories",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response is array\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.be.an('array');",
+                  "});",
+                  "",
+                  "pm.test(\"Categories have required fields\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    if (jsonData.length > 0) {",
+                  "        pm.expect(jsonData[0]).to.have.property('id');",
+                  "        pm.expect(jsonData[0]).to.have.property('nome');",
+                  "        pm.expect(jsonData[0]).to.have.property('cor');",
+                  "        pm.expect(jsonData[0]).to.have.property('icone');",
+                  "    }",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/categorias",
+              "host": ["{{baseUrl}}"],
+              "path": ["categorias"]
+            }
+          }
+        },
+        {
+          "name": "Create Category",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Category created successfully\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('id');",
+                  "    pm.expect(jsonData.nome).to.eql('Postman Test Category');",
+                  "    pm.collectionVariables.set('testCategoryId', jsonData.id);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nome\": \"Postman Test Category\",\n    \"cor\": \"#FF5733\",\n    \"icone\": \"test\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/categorias",
+              "host": ["{{baseUrl}}"],
+              "path": ["categorias"]
+            }
+          }
+        },
+        {
+          "name": "Update Category",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Category updated successfully\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.nome).to.eql('Updated Postman Category');",
+                  "    pm.expect(jsonData.cor).to.eql('#33FF57');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nome\": \"Updated Postman Category\",\n    \"cor\": \"#33FF57\",\n    \"icone\": \"updated\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/categorias/{{testCategoryId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["categorias", "{{testCategoryId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Category",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/categorias/{{testCategoryId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["categorias", "{{testCategoryId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Transactions",
+      "item": [
+        {
+          "name": "Get All Transactions",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response is array\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.be.an('array');",
+                  "});",
+                  "",
+                  "pm.test(\"Transactions have required fields\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    if (jsonData.length > 0) {",
+                  "        pm.expect(jsonData[0]).to.have.property('id');",
+                  "        pm.expect(jsonData[0]).to.have.property('data');",
+                  "        pm.expect(jsonData[0]).to.have.property('valor');",
+                  "        pm.expect(jsonData[0]).to.have.property('descricao');",
+                  "        pm.expect(jsonData[0]).to.have.property('tipo');",
+                  "    }",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/transacoes",
+              "host": ["{{baseUrl}}"],
+              "path": ["transacoes"]
+            }
+          }
+        },
+        {
+          "name": "Create Income Transaction",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Transaction created successfully\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('id');",
+                  "    pm.expect(jsonData.descricao).to.eql('Postman Test Income');",
+                  "    pm.expect(jsonData.tipo).to.eql('ENTRADA');",
+                  "    pm.collectionVariables.set('testTransactionId', jsonData.id);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"data\": \"2024-06-20\",\n    \"valor\": 1000.00,\n    \"descricao\": \"Postman Test Income\",\n    \"tipo\": \"ENTRADA\",\n    \"categoria\": {\"id\": 7},\n    \"conta\": {\"id\": 1}\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/transacoes",
+              "host": ["{{baseUrl}}"],
+              "path": ["transacoes"]
+            }
+          }
+        },
+        {
+          "name": "Create Expense Transaction",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Transaction created successfully\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('id');",
+                  "    pm.expect(jsonData.descricao).to.eql('Postman Test Expense');",
+                  "    pm.expect(jsonData.tipo).to.eql('SAIDA');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"data\": \"2024-06-20\",\n    \"valor\": 250.00,\n    \"descricao\": \"Postman Test Expense\",\n    \"tipo\": \"SAIDA\",\n    \"categoria\": {\"id\": 1},\n    \"conta\": {\"id\": 1}\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/transacoes",
+              "host": ["{{baseUrl}}"],
+              "path": ["transacoes"]
+            }
+          }
+        },
+        {
+          "name": "Create Transfer Transaction",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Transfer created successfully\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('id');",
+                  "    pm.expect(jsonData.tipo).to.eql('TRANSFERENCIA');",
+                  "    pm.expect(jsonData.contaDestino).to.have.property('id');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"data\": \"2024-06-20\",\n    \"valor\": 500.00,\n    \"descricao\": \"Postman Test Transfer\",\n    \"tipo\": \"TRANSFERENCIA\",\n    \"conta\": {\"id\": 1},\n    \"contaDestino\": {\"id\": 2}\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/transacoes",
+              "host": ["{{baseUrl}}"],
+              "path": ["transacoes"]
+            }
+          }
+        },
+        {
+          "name": "Update Transaction",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Transaction updated successfully\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.descricao).to.eql('Updated Postman Transaction');",
+                  "    pm.expect(jsonData.valor).to.eql(1500.00);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"data\": \"2024-06-20\",\n    \"valor\": 1500.00,\n    \"descricao\": \"Updated Postman Transaction\",\n    \"tipo\": \"ENTRADA\",\n    \"categoria\": {\"id\": 7},\n    \"conta\": {\"id\": 1}\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/transacoes/{{testTransactionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["transacoes", "{{testTransactionId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Transactions by Period",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response is array\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.be.an('array');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/transacoes/periodo?inicio=2024-01-01&fim=2024-12-31",
+              "host": ["{{baseUrl}}"],
+              "path": ["transacoes", "periodo"],
+              "query": [
+                {
+                  "key": "inicio",
+                  "value": "2024-01-01"
+                },
+                {
+                  "key": "fim",
+                  "value": "2024-12-31"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Transaction",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/transacoes/{{testTransactionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["transacoes", "{{testTransactionId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Goals",
+      "item": [
+        {
+          "name": "Get All Goals",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response is array\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.be.an('array');",
+                  "});",
+                  "",
+                  "pm.test(\"Goals have required fields\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    if (jsonData.length > 0) {",
+                  "        pm.expect(jsonData[0]).to.have.property('id');",
+                  "        pm.expect(jsonData[0]).to.have.property('titulo');",
+                  "        pm.expect(jsonData[0]).to.have.property('valorAlvo');",
+                  "        pm.expect(jsonData[0]).to.have.property('valorAtual');",
+                  "        pm.expect(jsonData[0]).to.have.property('dataInicio');",
+                  "        pm.expect(jsonData[0]).to.have.property('dataFim');",
+                  "    }",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/metas",
+              "host": ["{{baseUrl}}"],
+              "path": ["metas"]
+            }
+          }
+        },
+        {
+          "name": "Get Active Goals",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"All goals are active\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    jsonData.forEach(function(goal) {",
+                  "        pm.expect(goal.ativa).to.be.true;",
+                  "    });",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/metas/ativas",
+              "host": ["{{baseUrl}}"],
+              "path": ["metas", "ativas"]
+            }
+          }
+        },
+        {
+          "name": "Create Goal",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Goal created successfully\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('id');",
+                  "    pm.expect(jsonData.titulo).to.eql('Postman Test Goal');",
+                  "    pm.expect(jsonData.valorAlvo).to.eql(5000.00);",
+                  "    pm.collectionVariables.set('testGoalId', jsonData.id);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"titulo\": \"Postman Test Goal\",\n    \"valorAlvo\": 5000.00,\n    \"valorAtual\": 1000.00,\n    \"dataInicio\": \"2024-01-01\",\n    \"dataFim\": \"2024-12-31\",\n    \"categoria\": {\"id\": 8}\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/metas",
+              "host": ["{{baseUrl}}"],
+              "path": ["metas"]
+            }
+          }
+        },
+        {
+          "name": "Update Goal",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Goal updated successfully\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.titulo).to.eql('Updated Postman Goal');",
+                  "    pm.expect(jsonData.valorAtual).to.eql(2000.00);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"titulo\": \"Updated Postman Goal\",\n    \"valorAlvo\": 5000.00,\n    \"valorAtual\": 2000.00,\n    \"dataInicio\": \"2024-01-01\",\n    \"dataFim\": \"2024-12-31\",\n    \"categoria\": {\"id\": 8},\n    \"ativa\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/metas/{{testGoalId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["metas", "{{testGoalId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Goal",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/metas/{{testGoalId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["metas", "{{testGoalId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Dashboard",
+      "item": [
+        {
+          "name": "Get Dashboard Data",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Dashboard has required fields\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('saldoTotal');",
+                  "    pm.expect(jsonData).to.have.property('receitasMes');",
+                  "    pm.expect(jsonData).to.have.property('gastosMes');",
+                  "    pm.expect(jsonData).to.have.property('metasAtivas');",
+                  "    pm.expect(jsonData).to.have.property('gastosPorCategoria');",
+                  "});",
+                  "",
+                  "pm.test(\"Numeric fields are numbers\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.saldoTotal).to.be.a('number');",
+                  "    pm.expect(jsonData.receitasMes).to.be.a('number');",
+                  "    pm.expect(jsonData.gastosMes).to.be.a('number');",
+                  "    pm.expect(jsonData.metasAtivas).to.be.a('number');",
+                  "});",
+                  "",
+                  "pm.test(\"Expenses by category is array\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.gastosPorCategoria).to.be.an('array');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/dashboard",
+              "host": ["{{baseUrl}}"],
+              "path": ["dashboard"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Error Handling",
+      "item": [
+        {
+          "name": "Unauthorized Request",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 401 or 403\", function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([401, 403]);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/transacoes",
+              "host": ["{{baseUrl}}"],
+              "path": ["transacoes"]
+            }
+          }
+        },
+        {
+          "name": "Invalid Transaction Data",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 400\", function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "",
+                  "pm.test(\"Error message contains validation info\", function () {",
+                  "    pm.expect(pm.response.text()).to.include('obrigatório');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"data\": \"2024-06-20\",\n    \"valor\": -100,\n    \"descricao\": \"\",\n    \"tipo\": \"INVALID_TYPE\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/transacoes",
+              "host": ["{{baseUrl}}"],
+              "path": ["transacoes"]
+            }
+          }
+        },
+        {
+          "name": "Non-existent Resource",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 404 or 400\", function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([404, 400]);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/transacoes/99999",
+              "host": ["{{baseUrl}}"],
+              "path": ["transacoes", "99999"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Performance Tests",
+      "item": [
+        {
+          "name": "Load Test - Get Transactions",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response time is less than 2000ms\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "",
+                  "pm.test(\"Response size is reasonable\", function () {",
+                  "    pm.expect(pm.response.responseSize).to.be.below(1000000); // 1MB",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/transacoes",
+              "host": ["{{baseUrl}}"],
+              "path": ["transacoes"]
+            }
+          }
+        },
+        {
+          "name": "Bulk Transaction Creation",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// Create multiple transactions for testing",
+                  "const transactions = [];",
+                  "for (let i = 1; i <= 10; i++) {",
+                  "    transactions.push({",
+                  "        data: '2024-06-20',",
+                  "        valor: 100 * i,",
+                  "        descricao: `Bulk Test Transaction ${i}`,",
+                  "        tipo: i % 2 === 0 ? 'ENTRADA' : 'SAIDA',",
+                  "        categoria: { id: i % 2 === 0 ? 7 : 1 },",
+                  "        conta: { id: 1 }",
+                  "    });",
+                  "}",
+                  "pm.collectionVariables.set('bulkTransactions', JSON.stringify(transactions));"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Bulk creation performance\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(5000);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"data\": \"2024-06-20\",\n    \"valor\": 100,\n    \"descricao\": \"Performance Test Transaction\",\n    \"tipo\": \"ENTRADA\",\n    \"categoria\": {\"id\": 7},\n    \"conta\": {\"id\": 1}\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/transacoes",
+              "host": ["{{baseUrl}}"],
+              "path": ["transacoes"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": ["// Global pre-request script", "console.log('Running request to:', pm.request.url.toString());"]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Global test script",
+          "pm.test('Response time is acceptable', function () {",
+          "    pm.expect(pm.response.responseTime).to.be.below(5000);",
+          "});",
+          "",
+          "pm.test('Response has correct content type', function () {",
+          "    if (pm.response.code === 200) {",
+          "        pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+          "    }",
+          "});"
+        ]
+      }
+    }
+  ]
+}
