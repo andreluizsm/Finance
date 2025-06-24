@@ -55,10 +55,10 @@ export function GoalsPage() {
                     <CardTitle className="text-lg">{goal.title}</CardTitle>
                   </div>
                   <div className="flex space-x-1">
-                    <Button variant="ghost" size="icon" onClick={() => handleEdit(goal)}>
+                    <Button id="update" variant="ghost" size="icon" onClick={() => handleEdit(goal)}>
                       <Pencil className="h-4 w-4" />
                     </Button>
-                    <Button variant="ghost" size="icon" onClick={() => handleDelete(goal.id)}>
+                    <Button id="delete" variant="ghost" size="icon" onClick={() => handleDelete(goal.id)}>
                       <Trash2 className="h-4 w-4" />
                     </Button>
                   </div>
