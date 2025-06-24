@@ -9,7 +9,7 @@ import { useFinanceData } from "@/hooks/use-finance-data"
 import { CategoryDialog } from "./category-dialog"
 
 export function CategoriesPage() {
-  const { categories } = useFinanceData()
+  const { categories, deleteCategory } = useFinanceData()
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [editingCategory, setEditingCategory] = useState(null)
 
@@ -21,6 +21,7 @@ export function CategoriesPage() {
   const handleDelete = (categoryId: number) => {
     if (confirm("Tem certeza que deseja excluir esta categoria?")) {
       console.log("Excluir categoria:", categoryId)
+        deleteCategory(categoryId)
     }
   }
 

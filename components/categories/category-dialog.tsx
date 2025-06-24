@@ -36,6 +36,14 @@ export function CategoryDialog({ open, onOpenChange, category }: CategoryDialogP
     icon: "tag",
   })
 
+  const resetForm = () => {
+    setFormData({
+      name: "",
+      color: "#FF6B6B",
+      icon: "tag",
+    })
+  }
+
   useEffect(() => {
     if (category) {
       setFormData({
@@ -59,6 +67,7 @@ export function CategoryDialog({ open, onOpenChange, category }: CategoryDialogP
       updateCategory(category.id, formData)
     } else {
       addCategory(formData)
+      resetForm()
     }
 
     onOpenChange(false)
