@@ -20,12 +20,11 @@ public class UsuarioService {
     
     @Transactional
     public Usuario registrar(Usuario usuario) {
-        // Validar se email já existe
+
         if (usuarioRepository.existsByEmail(usuario.getEmail())) {
             throw new RuntimeException("Email já cadastrado");
         }
-        
-        // Validar dados básicos
+
         if (usuario.getNome() == null || usuario.getNome().trim().isEmpty()) {
             throw new RuntimeException("Nome é obrigatório");
         }
@@ -41,11 +40,9 @@ public class UsuarioService {
         if (usuario.getSenha().length() < 6) {
             throw new RuntimeException("Senha deve ter no mínimo 6 caracteres");
         }
-        
-        // Criptografar senha
+
         usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
-        
-        // Salvar usuário
+
         return usuarioRepository.save(usuario);
     }
     
