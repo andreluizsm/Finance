@@ -23,7 +23,7 @@ describe("Transaction Management", () => {
       cy.get('[role="listbox"]').contains("Salário").click()
 
       cy.contains("label", "Conta").parent().find('button[role="combobox"]').click()
-      cy.get('[role="listbox"]').contains("Carteira").click()
+      cy.get('[role="listbox"]').contains("Conta Corrente").click()
 
       cy.get('button[type="submit"]').contains("Criar").click()
 
@@ -45,7 +45,7 @@ describe("Transaction Management", () => {
       cy.get('[role="listbox"]').contains("Alimentação").click()
 
       cy.contains("label", "Conta").parent().find('button[role="combobox"]').click()
-      cy.get('[role="listbox"]').contains("Carteira").click()
+      cy.get('[role="listbox"]').contains("Conta Corrente").click()
 
       cy.get('button[type="submit"]').contains("Criar").click()
 
@@ -63,11 +63,11 @@ describe("Transaction Management", () => {
       cy.contains("label", "Tipo").parent().find('button[role="combobox"]').click()
       cy.get('[role="listbox"]').contains("Entrada").click()
       cy.contains("label", "Conta").parent().find('button[role="combobox"]').click()
-      cy.get('[role="listbox"]').contains("Carteira").click()
+      cy.get('[role="listbox"]').contains("Conta Corrente").click()
       cy.get('button[type="submit"]').contains("Criar").click()
 
       cy.contains('Cypress Test - To Delete')
-          .closest('div.flex.items-center.justify-between') // O container principal da transação
+          .closest('div.flex.items-center.justify-between')
           .find('button#delete')
           .click()
       cy.on("window:confirm", () => true)
@@ -92,7 +92,7 @@ describe("Transaction Management", () => {
         cy.contains("label", "Categoria").parent().find('button[role="combobox"]').click()
         cy.get('[role="listbox"]').contains("Alimentaçãoo").click()
         cy.contains("label", "Conta").parent().find('button[role="combobox"]').click()
-        cy.get('[role="listbox"]').contains("Carteira").click()
+        cy.get('[role="listbox"]').contains("Conta Corrente").click()
         cy.get('button[type="submit"]').contains("Criar").click()
         cy.wait(1000) // Wait for the transaction to be processed
       })

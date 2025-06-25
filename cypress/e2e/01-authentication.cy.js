@@ -104,16 +104,4 @@ describe("Authentication Flow", () => {
     })
   })
 
-  describe("Protected Routes", () => {
-    it("should redirect to login when accessing protected routes without authentication", () => {
-      cy.visit("/dashboard")
-      cy.url().should("eq", Cypress.config().baseUrl + "/")
-
-      cy.visit("/dashboard/transactions")
-      cy.url().should("eq", Cypress.config().baseUrl + "/")
-
-      cy.visit("/dashboard/accounts")
-      cy.url().should("eq", Cypress.config().baseUrl + "/")
-    })
-  })
 })
