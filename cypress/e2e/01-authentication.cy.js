@@ -1,5 +1,3 @@
-// Remover todas as importações - Cypress disponibiliza tudo globalmente
-
 describe("Authentication Flow", () => {
   beforeEach(() => {
     cy.clearLocalStorage()
