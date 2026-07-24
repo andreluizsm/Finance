@@ -2,11 +2,12 @@ package com.organize.finance.bases.baseController;
 
 
 import java.util.List;
+import java.util.Optional;
 
 
 public abstract class baseController<T> {
 
-    public abstract T findById (Long Id);
+    public abstract Optional<T> findById (Long Id);
 
     public abstract List<T> findAll();
 

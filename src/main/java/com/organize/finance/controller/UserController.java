@@ -6,8 +6,9 @@ import com.organize.finance.service.UserService;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
-@RestController
+@RestController("API/usuarios")
 public class UserController extends baseController<User> {
     UserService userService;
 
@@ -16,8 +17,8 @@ public class UserController extends baseController<User> {
     }
 
     @Override
-    public User findById(Long Id) {
-        return null;
+    public Optional<User> findById(Long id) {
+        return userService.findById(id);
     }
 
     @Override

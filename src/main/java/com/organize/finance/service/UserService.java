@@ -29,7 +29,7 @@ public class UserService extends baseService<User> {
 
     @Override
     public User create(User entity) {
-        return null;
+        return userRepository.save(entity);
     }
 
     @Override
@@ -39,6 +39,6 @@ public class UserService extends baseService<User> {
 
     @Override
     public void delete(Long id) {
-
+        userRepository.deleteById(id);
     }
 }
