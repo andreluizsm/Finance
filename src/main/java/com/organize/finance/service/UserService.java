@@ -34,7 +34,18 @@ public class UserService extends baseService<User> {
 
     @Override
     public User update(User entity) {
-        return null;
+        Optional<User> userOld = findById(entity.getId());
+        if (userOld.isPresent()) {
+            User usuario = userOld.get();
+
+            usuario.setId(entity.getId());
+            usuario.setNome(entity.getNome());
+            usuario.setEmail(entity.getEmail());
+            usuario.setSenha(entity.getSenha());
+
+            return userRepository.save(usuario);
+        }
+        return entity;
     }
 
     @Override
