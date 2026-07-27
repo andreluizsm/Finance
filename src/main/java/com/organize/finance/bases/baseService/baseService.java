@@ -14,7 +14,7 @@ public abstract class baseService<T> {
 
     public abstract T create(T entity);
 
-    public abstract T update(T entity);
+    public abstract T update(T entity) throws Exception;
 
     public abstract void delete(Long id);
 }

@@ -3,7 +3,7 @@ package com.organize.finance.controller;
 import com.organize.finance.bases.baseController.baseController;
 import com.organize.finance.domain.User;
 import com.organize.finance.service.UserService;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +17,7 @@ public class UserController extends baseController<User> {
     }
 
     @Override
+    @GetMapping("/{id}")
     public Optional<User> findById(Long id) {
         return userService.findById(id);
     }
@@ -27,16 +28,19 @@ public class UserController extends baseController<User> {
     }
 
     @Override
+    @PostMapping("")
     public User create(User entity) {
         return null;
     }
 
     @Override
+    @PutMapping("")
     public User update(User entity) {
         return null;
     }
 
     @Override
+    @DeleteMapping("")
     public void delete(Long id) {
 
     }

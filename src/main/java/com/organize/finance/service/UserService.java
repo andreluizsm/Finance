@@ -33,7 +33,7 @@ public class UserService extends baseService<User> {
     }
 
     @Override
-    public User update(User entity) {
+    public User update(User entity) throws Exception {
         Optional<User> userOld = findById(entity.getId());
         if (userOld.isPresent()) {
             User usuario = userOld.get();
@@ -45,7 +45,7 @@ public class UserService extends baseService<User> {
 
             return userRepository.save(usuario);
         }
-        return entity;
+        throw new Exception("Usuario invalido");
     }
 
     @Override
