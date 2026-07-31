@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-@RestController("API/usuarios")
+@RestController
+@RequestMapping("api/usuarios")
 public class UserController extends baseController<User> {
     UserService userService;
 
@@ -28,19 +29,19 @@ public class UserController extends baseController<User> {
     }
 
     @Override
-    @PostMapping("")
+    @PostMapping()
     public User create(User entity) {
-        return null;
+        return userService.create(entity);
     }
 
     @Override
-    @PutMapping("")
+    @PutMapping()
     public User update(User entity) {
         return null;
     }
 
     @Override
-    @DeleteMapping("")
+    @DeleteMapping()
     public void delete(Long id) {
 
     }
