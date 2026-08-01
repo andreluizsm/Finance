@@ -19,7 +19,7 @@ public class UserController extends baseController<User> {
 
     @Override
     @GetMapping("/{id}")
-    public Optional<User> findById(Long id) {
+    public Optional<User> findById(@PathVariable Long id) {
         return userService.findById(id);
     }
 
