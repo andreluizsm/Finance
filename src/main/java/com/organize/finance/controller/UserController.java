@@ -30,7 +30,7 @@ public class UserController extends baseController<User> {
 
     @Override
     @PostMapping()
-    public User create(User entity) {
+    public User create(@RequestBody User entity) {
         return userService.create(entity);
     }
 
