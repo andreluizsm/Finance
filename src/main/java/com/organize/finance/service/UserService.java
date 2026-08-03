@@ -3,6 +3,7 @@ package com.organize.finance.service;
 import com.organize.finance.bases.baseService.baseService;
 import com.organize.finance.domain.User;
 import com.organize.finance.repository.UserRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public class UserService extends baseService<User> {
     }
 
     @Override
-    public Optional<User> findById(Long id) {
+    public ResponseEntity<User> findById(Long id) {
         return userRepository.findById(id);
     }
 

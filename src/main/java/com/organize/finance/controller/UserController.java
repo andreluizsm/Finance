@@ -3,15 +3,16 @@ package com.organize.finance.controller;
 import com.organize.finance.bases.baseController.baseController;
 import com.organize.finance.domain.User;
 import com.organize.finance.service.UserService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("api/usuarios")
 public class UserController extends baseController<User> {
-    UserService userService;
+
+    private final UserService userService;
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -19,13 +20,14 @@ public class UserController extends baseController<User> {
 
     @Override
     @GetMapping("/{id}")
-    public Optional<User> findById(@PathVariable Long id) {
+    public ResponseEntity<User> findById(@PathVariable Long id) {
         return userService.findById(id);
     }
 
     @Override
+    @PostMapping
     public List<User> findAll() {
-        return List.of();
+        return userService.findAll();
     }
 
     @Override
@@ -36,13 +38,13 @@ public class UserController extends baseController<User> {
 
     @Override
     @PutMapping()
-    public User update(User entity) {
-        return null;
+    public User update(@RequestBody User entity) throws Exception {
+        return userService.update(entity);
     }
 
     @Override
-    @DeleteMapping()
-    public void delete(Long id) {
-
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        userService.delete(id);
     }
 }
