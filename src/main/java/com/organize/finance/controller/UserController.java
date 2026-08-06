@@ -1,8 +1,9 @@
 package com.organize.finance.controller;
 
 import com.organize.finance.bases.baseController.baseController;
-import com.organize.finance.domain.User;
+import com.organize.finance.domain.dto.UserDto;
 import com.organize.finance.service.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/usuarios")
-public class UserController extends baseController<User> {
+public class UserController extends baseController<UserDto> {
 
     private final UserService userService;
 
@@ -18,27 +19,26 @@ public class UserController extends baseController<User> {
         this.userService = userService;
     }
 
-    @Override
     @GetMapping("/{id}")
-    public ResponseEntity<User> findById(@PathVariable Long id) {
-        return userService.findById(id);
+    public ResponseEntity<UserDto> findById(@PathVariable Long id) {
+        return new ResponseEntity<>(userService.findById(id), HttpStatus.OK);
     }
 
     @Override
     @PostMapping
-    public List<User> findAll() {
+    public List<UserDto> findAll() {
         return userService.findAll();
     }
 
     @Override
     @PostMapping()
-    public User create(@RequestBody User entity) {
+    public ResponseEntity<UserDto> create(@RequestBody UserDto entity) {
         return userService.create(entity);
     }
 
     @Override
     @PutMapping()
-    public User update(@RequestBody User entity) throws Exception {
+    public ResponseEntity<UserDto> update(@RequestBody UserDto entity) throws Exception {
         return userService.update(entity);
     }
 

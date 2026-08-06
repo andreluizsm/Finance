@@ -13,9 +13,9 @@ public abstract class baseController<T> {
 
     public abstract List<T> findAll();
 
-    public abstract T create(T entity);
+    public abstract ResponseEntity<T> create(T entity);
 
-    public abstract T update(T entity) throws Exception;
+    public abstract ResponseEntity<T> update(T entity) throws Exception;
 
     public abstract void delete(Long id);
 }
