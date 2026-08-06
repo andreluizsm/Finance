@@ -1,6 +1,6 @@
 package com.organize.finance.domain.dto;
 
-public record userDTO(
+public record UserDto(
         Long id,
         String nome,
         String email,

@@ -33,13 +33,13 @@ public class UserController extends baseController<UserDto> {
     @Override
     @PostMapping()
     public ResponseEntity<UserDto> create(@RequestBody UserDto entity) {
-        return userService.create(entity);
+        return new ResponseEntity<>(userService.create(entity), HttpStatus.CREATED);
     }
 
     @Override
     @PutMapping()
     public ResponseEntity<UserDto> update(@RequestBody UserDto entity) throws Exception {
-        return userService.update(entity);
+        return new ResponseEntity<>(userService.update(entity), HttpStatus.OK);
     }
 
     @Override
