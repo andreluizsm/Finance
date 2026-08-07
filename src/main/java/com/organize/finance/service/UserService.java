@@ -26,7 +26,7 @@ public class UserService extends baseService<UserDto> {
 
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()){
-            return userMapper.mapUserToUserDto(user.get());
+            return userMapper.objToDto(user.get());
         }
 
         throw new RuntimeException();
@@ -37,16 +37,16 @@ public class UserService extends baseService<UserDto> {
 
         List<User> usuarios = userRepository.findAll();
 
-        return userMapper.mapUserListToUserDtoList(usuarios);
+        return userMapper.objListToDtoList(usuarios);
     }
 
     @Override
     public UserDto create(UserDto entity) {
 
-        User user = userMapper.mapUserDtoToUser(entity);
+        User user = userMapper.dtoToObj(entity);
         User saved = userRepository.save(user);
 
-        return userMapper.mapUserToUserDto(saved);
+        return userMapper.objToDto(saved);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class UserService extends baseService<UserDto> {
 
         UserDto userOld = findById(entity.id());
         if (userOld != null) {
-            User usuario = userMapper.mapUserDtoToUser(userOld);
+            User usuario = userMapper.dtoToObj(userOld);
 
             usuario.setId(entity.id());
             usuario.setNome(entity.nome());
@@ -63,7 +63,7 @@ public class UserService extends baseService<UserDto> {
 
             User saved = userRepository.save(usuario);
 
-            return userMapper.mapUserToUserDto(saved);
+            return userMapper.objToDto(saved);
         }
         throw new Exception("Usuario invalido");
     }
