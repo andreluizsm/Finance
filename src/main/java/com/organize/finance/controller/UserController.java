@@ -19,13 +19,14 @@ public class UserController extends baseController<UserDto> {
         this.userService = userService;
     }
 
+    @Override
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> findById(@PathVariable Long id) {
         return new ResponseEntity<>(userService.findById(id), HttpStatus.OK);
     }
 
     @Override
-    @PostMapping
+    @GetMapping("/all")
     public List<UserDto> findAll() {
         return userService.findAll();
     }

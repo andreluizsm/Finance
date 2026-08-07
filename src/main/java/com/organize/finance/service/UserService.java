@@ -34,7 +34,10 @@ public class UserService extends baseService<UserDto> {
 
     @Override
     public List<UserDto> findAll() {
-        return List.of();
+
+        List<User> usuarios = userRepository.findAll();
+
+        return userMapper.mapUserListToUserDtoList(usuarios);
     }
 
     @Override
