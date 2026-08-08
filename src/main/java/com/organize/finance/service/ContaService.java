@@ -8,6 +8,7 @@ import java.util.List;
 
 @Service
 public class ContaService extends baseService<ContaDto> {
+
     @Override
     public ContaDto findById(Long id) {
         return null;
