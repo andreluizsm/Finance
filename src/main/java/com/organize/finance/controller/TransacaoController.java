@@ -18,7 +18,6 @@ public class TransacaoController extends baseController<TransacaoDto> {
         this.transacaoService = transacaoService;
     }
 
-
     @Override
     public ResponseEntity<TransacaoDto> findById(Long id) {
         return new ResponseEntity<>(transacaoService.findById(id), HttpStatus.OK);

@@ -21,7 +21,6 @@ public class TransacaoService extends baseService<TransacaoDto> {
         this.transacaoMapper = transacaoMapper;
     }
 
-
     @Override
     public TransacaoDto findById(Long id) {
         Optional<Transacao> transacao = transacaoRepository.findById(id);
@@ -38,7 +37,8 @@ public class TransacaoService extends baseService<TransacaoDto> {
 
     @Override
     public TransacaoDto create(TransacaoDto entity) {
-        return null;
+        Transacao saved =  transacaoRepository.save(transacaoMapper.dtoToObj(entity));
+        return transacaoMapper.objToDto(saved);
     }
 
     @Override
@@ -48,6 +48,6 @@ public class TransacaoService extends baseService<TransacaoDto> {
 
     @Override
     public void delete(Long id) {
-
+        transacaoRepository.deleteById(id);
     }
 }
