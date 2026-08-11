@@ -1,8 +1,6 @@
 package com.organize.finance.domain.dto;
 
 import com.organize.finance.domain.User;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 
 import java.time.LocalDate;
 
