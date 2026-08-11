@@ -1,15 +1,34 @@
 package com.organize.finance.service;
 
 import com.organize.finance.bases.baseService.baseService;
+import com.organize.finance.domain.Transacao;
 import com.organize.finance.domain.dto.TransacaoDto;
+import com.organize.finance.mapper.TransacaoMapper;
+import com.organize.finance.repository.TransacaoRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
+@Service
 public class TransacaoService extends baseService<TransacaoDto> {
+
+    private final TransacaoRepository transacaoRepository;
+    private final TransacaoMapper transacaoMapper;
+
+    public TransacaoService(TransacaoRepository transacaoRepository, TransacaoMapper transacaoMapper) {
+        this.transacaoRepository = transacaoRepository;
+        this.transacaoMapper = transacaoMapper;
+    }
+
 
     @Override
     public TransacaoDto findById(Long id) {
-        return null;
+        Optional<Transacao> transacao = transacaoRepository.findById(id);
+        if (transacao.isPresent()){
+            return transacaoMapper.objToDto(transacao.get());
+        }
+        throw new RuntimeException();
     }
 
     @Override
