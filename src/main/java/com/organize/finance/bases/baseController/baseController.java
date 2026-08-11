@@ -4,12 +4,11 @@ package com.organize.finance.bases.baseController;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
-import java.util.Optional;
 
 
 public abstract class baseController<T> {
 
-    public abstract ResponseEntity<T> findById (Long Id);
+    public abstract ResponseEntity<T> findById (Long id);
 
     public abstract List<T> findAll();
 
