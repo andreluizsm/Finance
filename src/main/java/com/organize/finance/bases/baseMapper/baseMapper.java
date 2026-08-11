@@ -1,10 +1,7 @@
 package com.organize.finance.bases.baseMapper;
 
-import org.mapstruct.Mapper;
-
 import java.util.List;
 
-@Mapper(componentModel = "spring")
 public interface baseMapper<T, Y> {
 
     Y objToDto(T obj);
