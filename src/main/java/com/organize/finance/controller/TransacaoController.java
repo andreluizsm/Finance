@@ -25,21 +25,21 @@ public class TransacaoController extends baseController<TransacaoDto> {
 
     @Override
     public List<TransacaoDto> findAll() {
-        return List.of();
+        return transacaoService.findAll();
     }
 
     @Override
     public ResponseEntity<TransacaoDto> create(TransacaoDto entity) {
-        return null;
+        return new ResponseEntity<>(transacaoService.create(entity), HttpStatus.CREATED);
     }
 
     @Override
     public ResponseEntity<TransacaoDto> update(TransacaoDto entity) throws Exception {
-        return null;
+        return new ResponseEntity<>(transacaoService.update(entity), HttpStatus.OK);
     }
 
     @Override
     public void delete(Long id) {
-
+        transacaoService.delete(id);
     }
 }

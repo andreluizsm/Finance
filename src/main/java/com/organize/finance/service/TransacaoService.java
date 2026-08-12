@@ -32,7 +32,8 @@ public class TransacaoService extends baseService<TransacaoDto> {
 
     @Override
     public List<TransacaoDto> findAll() {
-        return List.of();
+        List<Transacao> transacoes = transacaoRepository.findAll();
+        return transacaoMapper.objListToDtoList(transacoes);
     }
 
     @Override
@@ -43,7 +44,23 @@ public class TransacaoService extends baseService<TransacaoDto> {
 
     @Override
     public TransacaoDto update(TransacaoDto entity) throws Exception {
-        return null;
+
+        TransacaoDto oldTransacao = findById(entity.id());
+        if (oldTransacao != null) {
+            Transacao transacao = transacaoMapper.dtoToObj(oldTransacao);
+
+            transacao.setId(entity.id());
+            transacao.setValor(entity.valor());
+            transacao.setTipo(entity.tipo());
+            transacao.setData(entity.data());
+            transacao.setDescricao(entity.descricao());
+            transacao.setCategoriaId(entity.categoriaId());
+
+            Transacao transacaoSaved = transacaoRepository.save(transacao);
+
+            return transacaoMapper.objToDto(transacaoSaved);
+        }
+        throw new RuntimeException();
     }
 
     @Override
