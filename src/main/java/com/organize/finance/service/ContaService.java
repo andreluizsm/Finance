@@ -37,7 +37,9 @@ public class ContaService extends baseService<ContaDto> {
 
     @Override
     public ContaDto create(ContaDto entity) {
-        return null;
+        Conta conta = contaMapper.dtoToObj(entity);
+        Conta contaSaved = contaRepository.save(conta);
+        return contaMapper.objToDto(contaSaved);
     }
 
     @Override
@@ -47,6 +49,6 @@ public class ContaService extends baseService<ContaDto> {
 
     @Override
     public void delete(Long id) {
-
+        contaRepository.deleteById(id);
     }
 }
