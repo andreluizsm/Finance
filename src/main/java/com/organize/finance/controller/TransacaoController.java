@@ -5,7 +5,7 @@ import com.organize.finance.domain.dto.TransacaoDto;
 import com.organize.finance.service.TransacaoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,27 +19,32 @@ public class TransacaoController extends baseController<TransacaoDto> {
     }
 
     @Override
-    public ResponseEntity<TransacaoDto> findById(Long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<TransacaoDto> findById(@PathVariable Long id) {
         return new ResponseEntity<>(transacaoService.findById(id), HttpStatus.OK);
     }
 
     @Override
+    @GetMapping("/all")
     public List<TransacaoDto> findAll() {
         return transacaoService.findAll();
     }
 
     @Override
-    public ResponseEntity<TransacaoDto> create(TransacaoDto entity) {
+    @PostMapping()
+    public ResponseEntity<TransacaoDto> create(@RequestBody TransacaoDto entity) {
         return new ResponseEntity<>(transacaoService.create(entity), HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<TransacaoDto> update(TransacaoDto entity) throws Exception {
+    @PutMapping()
+    public ResponseEntity<TransacaoDto> update(@RequestBody TransacaoDto entity) throws Exception {
         return new ResponseEntity<>(transacaoService.update(entity), HttpStatus.OK);
     }
 
     @Override
-    public void delete(Long id) {
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
         transacaoService.delete(id);
     }
 }
