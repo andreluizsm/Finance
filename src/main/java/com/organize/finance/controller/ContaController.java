@@ -2,35 +2,49 @@ package com.organize.finance.controller;
 
 import com.organize.finance.bases.baseController.baseController;
 import com.organize.finance.domain.dto.ContaDto;
+import com.organize.finance.service.ContaService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController("api/contas")
 public class ContaController extends baseController<ContaDto> {
-    @Override
-    public ResponseEntity<ContaDto> findById(Long id) {
-        return null;
+
+    private final ContaService contaService;
+
+    public ContaController(ContaService contaService) {
+        this.contaService = contaService;
     }
 
     @Override
+    @GetMapping("/{id}")
+    public ResponseEntity<ContaDto> findById(@PathVariable Long id) {
+        return new ResponseEntity<>(contaService.findById(id), HttpStatus.OK);
+    }
+
+    @Override
+    @GetMapping("/all")
     public List<ContaDto> findAll() {
-        return List.of();
+        return contaService.findAll();
     }
 
     @Override
-    public ResponseEntity<ContaDto> create(ContaDto entity) {
-        return null;
+    @PostMapping()
+    public ResponseEntity<ContaDto> create(@RequestBody ContaDto entity) {
+        return new ResponseEntity<>(contaService.create(entity), HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<ContaDto> update(ContaDto entity) throws Exception {
-        return null;
+    @PutMapping()
+    public ResponseEntity<ContaDto> update(@RequestBody ContaDto entity) throws Exception {
+        return new ResponseEntity<>(contaService.update(entity), HttpStatus.OK);
     }
 
     @Override
-    public void delete(Long id) {
-
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        contaService.delete(id);
     }
 }
