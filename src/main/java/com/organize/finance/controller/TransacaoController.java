@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController("api/transacoes")
+@RestController
+@RequestMapping("api/transacoes")
 public class TransacaoController extends baseController<TransacaoDto> {
 
     private final TransacaoService transacaoService;
