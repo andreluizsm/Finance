@@ -1,0 +1,29 @@
+package com.organize.finance.service;
+
+import com.organize.finance.domain.User;
+import com.organize.finance.domain.dto.LoginDto;
+import com.organize.finance.repository.UserRepository;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+@Service
+public class AuthenticationService {
+
+    private final UserRepository userRepository;
+    private final AuthenticationManager authenticationManager;
+    private final PasswordEncoder passwordEncoder;
+
+    public AuthenticationService(UserRepository userRepository, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.authenticationManager = authenticationManager;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+
+
+    private User singUp (LoginDto login ) {
+        User user = new User();
+        return null;
+    }
+}
