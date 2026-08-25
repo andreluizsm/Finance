@@ -24,6 +24,11 @@ public class AuthenticationService {
 
     private User singUp (LoginDto login ) {
         User user = new User();
-        return null;
+
+        user.setNome(login.nome());
+        user.setEmail(login.email());
+        user.setSenha(passwordEncoder.encode(login.senha()));
+
+        return userRepository.save(user);
     }
 }
