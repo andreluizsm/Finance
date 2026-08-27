@@ -2,6 +2,7 @@ package com.organize.finance.service;
 
 import com.organize.finance.domain.User;
 import com.organize.finance.domain.dto.LoginDto;
+import com.organize.finance.domain.dto.RegistoDto;
 import com.organize.finance.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,12 +24,12 @@ public class AuthenticationService {
 
 
 
-    public User singUp (LoginDto login ) {
+    public User singUp (RegistoDto register ) {
         User user = new User();
 
-        user.setNome(login.nome());
-        user.setEmail(login.email());
-        user.setSenha(passwordEncoder.encode(login.senha()));
+        user.setNome(register.nome());
+        user.setEmail(register.email());
+        user.setSenha(passwordEncoder.encode(register.senha()));
 
         return userRepository.save(user);
     }
