@@ -4,6 +4,7 @@ import com.organize.finance.domain.User;
 import com.organize.finance.domain.dto.LoginDto;
 import com.organize.finance.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,7 @@ public class AuthenticationService {
 
 
 
-    private User singUp (LoginDto login ) {
+    public User singUp (LoginDto login ) {
         User user = new User();
 
         user.setNome(login.nome());
@@ -31,4 +32,16 @@ public class AuthenticationService {
 
         return userRepository.save(user);
     }
+
+
+    public User authenticate(LoginDto login) {
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        login.email(),
+                        login.senha()
+                )
+        );
+        return userRepository.findByEmail(login.email()).orElseThrow();
+    }
+
 }
