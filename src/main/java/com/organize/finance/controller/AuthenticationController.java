@@ -1,7 +1,14 @@
 package com.organize.finance.controller;
 
+import com.organize.finance.domain.User;
+import com.organize.finance.domain.dto.LoginDto;
+import com.organize.finance.domain.dto.RegistoDto;
 import com.organize.finance.service.AuthenticationService;
 import com.organize.finance.service.JwtService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,5 +24,19 @@ public class AuthenticationController {
         this.authenticationService = authenticationService;
     }
 
+    @PostMapping("/signup")
+    public ResponseEntity<User> register(@RequestBody RegistoDto registoDto) {
+        User registeUser = authenticationService.singUp(registoDto);
+
+        return ResponseEntity.ok(registeUser);
+    }
+
+//    public ResponseEntity<LoginDto> authenticate(@RequestBody LoginDto loginDto) {
+//        User authenticatedUser = authenticationService.authenticate(loginDto);
+//
+//        String jwtToken = jwtService.generateToken((UserDetails) authenticatedUser);
+//
+//        LoginDto loginResponse = new LoginDto().set
+//    }
 
 }
