@@ -2,6 +2,7 @@ package com.organize.finance.controller;
 
 import com.organize.finance.domain.User;
 import com.organize.finance.domain.dto.LoginDto;
+import com.organize.finance.domain.dto.LoginResponse;
 import com.organize.finance.domain.dto.RegistoDto;
 import com.organize.finance.service.AuthenticationService;
 import com.organize.finance.service.JwtService;
@@ -31,12 +32,15 @@ public class AuthenticationController {
         return ResponseEntity.ok(registeUser);
     }
 
-//    public ResponseEntity<LoginDto> authenticate(@RequestBody LoginDto loginDto) {
-//        User authenticatedUser = authenticationService.authenticate(loginDto);
-//
-//        String jwtToken = jwtService.generateToken((UserDetails) authenticatedUser);
-//
-//        LoginDto loginResponse = new LoginDto().set
-//    }
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginDto loginDto) {
+        User authenticatedUser = authenticationService.authenticate(loginDto);
+
+        String jwtToken = jwtService.generateToken((UserDetails) authenticatedUser);
+
+        LoginResponse loginResponse = new LoginResponse(jwtToken, jwtService.getExpirationTime());
+
+        return ResponseEntity.ok(loginResponse);
+    }
 
 }
