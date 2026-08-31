@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController("api/contas")
+@RestController
+@RequestMapping("api/contas")
 public class ContaController extends baseController<ContaDto> {
 
     private final ContaService contaService;

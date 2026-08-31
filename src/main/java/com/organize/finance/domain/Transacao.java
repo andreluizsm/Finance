@@ -18,6 +18,9 @@ public class Transacao {
     private LocalDate data;
     private String descricao;
     private Long categoriaId;
+    @ManyToOne
+    @JoinColumn(name = "conta_id")
+    private Conta conta;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", referencedColumnName = "id")
