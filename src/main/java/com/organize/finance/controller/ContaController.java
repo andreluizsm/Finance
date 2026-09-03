@@ -38,7 +38,7 @@ public class ContaController extends baseController<ContaDto> {
     }
 
     @Override
-    @PutMapping("")
+    @PutMapping()
     public ResponseEntity<ContaDto> update(@RequestBody ContaDto entity) throws Exception {
         return new ResponseEntity<>(contaService.update(entity), HttpStatus.OK);
     }
